@@ -1,0 +1,62 @@
+name: iPlayer
+options:
+  bundleIdPrefix: com.iplayer
+  deploymentTarget:
+    iOS: 17.0
+  xcodeVersion: "16.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    INFOPLIST_FILE: iPlayer/Info.plist
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: ""
+    PROVISIONING_PROFILE_SPECIFIER: ""
+
+targets:
+  iPlayer:
+    type: application
+    platform: iOS
+    sources:
+      - path: iPlayer/iPlayerApp.swift
+      - path: iPlayer/ContentView.swift
+      - path: iPlayer/Models/Song.swift
+      - path: iPlayer/Models/Playlist.swift
+      - path: iPlayer/Managers/AudioManager.swift
+      - path: iPlayer/Managers/LibraryManager.swift
+      - path: iPlayer/ViewModels/LibraryViewModel.swift
+      - path: iPlayer/ViewModels/PlayerViewModel.swift
+      - path: iPlayer/Views/EmptyStateView.swift
+      - path: iPlayer/Views/LibraryView.swift
+      - path: iPlayer/Views/MiniPlayerView.swift
+      - path: iPlayer/Views/PlayerView.swift
+      - path: iPlayer/Views/PlaylistDetailView.swift
+      - path: iPlayer/Views/PlaylistListView.swift
+      - path: iPlayer/Views/SettingsView.swift
+      - path: iPlayer/Views/SongArtworkView.swift
+      - path: iPlayer/Helpers/Extensions.swift
+      - path: iPlayer/Assets.xcassets
+        type: folder
+      - path: iPlayer/Info.plist
+        type: file
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.iplayer.app
+        INFOPLIST_FILE: iPlayer/Info.plist
+        IPHONEOS_DEPLOYMENT_TARGET: 17.0
+        MARKETING_VERSION: 1.0.0
+        CURRENT_PROJECT_VERSION: 1
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+    info:
+      path: iPlayer/Info.plist
+      properties:
+        UIBackgroundModes:
+          - audio
+        UILaunchScreen:
+          UIColorName: AccentColor
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        MinimumOSVersion: "17.0"

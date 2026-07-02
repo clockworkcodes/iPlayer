@@ -1,0 +1,83 @@
+name: Build iPlayer IPA
+
+on:
+  workflow_dispatch:  # Manual trigger — Run workflow → Build IPA
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build iPlayer (${{ matrix.name }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - name: unsigned
+            runner: macos-latest
+            sign: "NO"
+            identity: ""
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Install XcodeGen
+        run: |
+          HOMEBREW_NO_AUTO_UPDATE=1 brew install xcodegen
+
+      - name: 📦 Generate .xcodeproj
+        run: xcodegen generate --spec project.yml
+
+      - name: 🏗 Build App (unsigned — AltStore signs on install)
+        run: |
+          xcodebuild \
+            -project iPlayer.xcodeproj \
+            -scheme iPlayer \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_REQUIRED=${{ matrix.sign }} \
+            CODE_SIGN_IDENTITY="${{ matrix.identity }}" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="" \
+            PRODUCT_BUNDLE_IDENTIFIER=com.iplayer.app \
+            clean build
+
+      - name: 📱 Package .app → .ipa
+        run: |
+          APP="build/Build/Products/Release-iphoneos/iPlayer.app"
+          if [ ! -d "$APP" ]; then
+            echo "❌ .app not found!"
+            find build -name "*.app" -type d
+            exit 1
+          fi
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          ditto -c -k --sequesterRsrc --keepParent Payload iPlayer.ipa
+          rm -rf Payload
+          echo "✅ IPA готов: $(ls -lh iPlayer.ipa | awk '{print $5}')"
+
+      - name: 📤 Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: iPlayer-${{ matrix.name }}
+          path: iPlayer.ipa
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: 📋 AltStore Instructions
+        run: |
+          cat <<'SUMMARY' >> $GITHUB_STEP_SUMMARY
+          ## ✅ iPlayer IPA готов!
+
+          1. **Скачай** `iPlayer-unsigned.ipa` из артефактов выше ☝️
+          2. **Открой AltStore** на iPhone
+          3. **Нажми** `+` (или **My Apps → Import**)
+          4. **Выбери** IPA — AltStore сам подпишет и установит
+
+          > ⚠️ free Apple ID — подпись действует 7 дней
+          > AltStore автоматически переподписывает в фоне
+
+          **Размер:** $(ls -lh iPlayer.ipa | awk '{print $5}')
+          **Минимальная версия:** iOS 17.0
+          SUMMARY

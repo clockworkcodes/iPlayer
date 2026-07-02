@@ -1,0 +1,17 @@
+# Xcode
+*.xcodeproj
+*.xcworkspace
+**/xcuserdata/
+**/DerivedData/
+build/
+*.xcarchive
+
+# macOS
+.DS_Store
+
+# GitHub Actions local files (optional)
+.env
+
+# Temporary
+*.ipa
+*.log
