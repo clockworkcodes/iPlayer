@@ -103,7 +103,7 @@ struct PlayerView: View {
                             } label: {
                                 Image(systemName: "shuffle")
                                     .font(.title2)
-                                    .foregroundStyle(playerVM.isShuffled ? .tint : .secondary)
+                                    .foregroundStyle(playerVM.isShuffled ? Color.accentColor : Color.secondary)
                                     .frame(width: 52, height: 52)
                             }
 
@@ -146,7 +146,7 @@ struct PlayerView: View {
                             } label: {
                                 Image(systemName: playerVM.repeatMode.iconName)
                                     .font(.title2)
-                                    .foregroundStyle(playerVM.repeatMode != .off ? .tint : .secondary)
+                                    .foregroundStyle(playerVM.repeatMode != .off ? Color.accentColor : Color.secondary)
                                     .frame(width: 52, height: 52)
                             }
                         }
