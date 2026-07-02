@@ -527,10 +527,7 @@ final class AudioManager: NSObject, ObservableObject {
         }
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-        stopTimer()
-    }
+    // Singleton — deinit never called. Timer/observer cleanup handled by lifecycle.
 }
 
 // MARK: - AVAudioPlayerDelegate

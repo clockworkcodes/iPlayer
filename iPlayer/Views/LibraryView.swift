@@ -132,7 +132,7 @@ struct LibraryView: View {
                 await libraryVM.importSongs(from: urls)
             }
         case .failure(let error):
-            if let nsError = error as? NSError, nsError.code == NSUserCancelledError {
+            if let nsError = error as NSError?, nsError.code == NSUserCancelledError {
                 // User cancelled — not an error
                 return
             }

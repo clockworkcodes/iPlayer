@@ -51,7 +51,7 @@ struct ContentView: View {
                                 .frame(height: 2)
 
                             Rectangle()
-                                .fill(.accent)
+                                .fill(.tint)
                                 .frame(width: geometry.size.width * playerVM.progress, height: 2)
                         }
                     }

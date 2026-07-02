@@ -81,7 +81,7 @@ struct PlaylistDetailView: View {
                 } label: {
                     Label("Play All", systemImage: "play.fill")
                         .font(.headline)
-                        .foregroundStyle(.accent)
+                        .foregroundStyle(.tint)
                 }
 
                 Button {
@@ -92,7 +92,7 @@ struct PlaylistDetailView: View {
                 } label: {
                     Label("Shuffle Play", systemImage: "shuffle")
                         .font(.headline)
-                        .foregroundStyle(.accent)
+                        .foregroundStyle(.tint)
                 }
             }
 
@@ -137,24 +137,26 @@ struct PlaylistDetailView: View {
                             systemImage: "checkmark.circle"
                         )
                     } else {
-                        List(availableSongs) { song in
-                            HStack {
-                                SongRowView(song: song)
+                        List {
+                            ForEach(availableSongs) { song in
+                                HStack {
+                                    SongRowView(song: song)
 
-                                Spacer()
+                                    Spacer()
 
-                                if selectedSongs.contains(song.id) {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundStyle(.accent)
-                                        .font(.title3)
+                                    if selectedSongs.contains(song.id) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundStyle(.tint)
+                                            .font(.title3)
+                                    }
                                 }
-                            }
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                if selectedSongs.contains(song.id) {
-                                    selectedSongs.remove(song.id)
-                                } else {
-                                    selectedSongs.insert(song.id)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    if selectedSongs.contains(song.id) {
+                                        selectedSongs.remove(song.id)
+                                    } else {
+                                        selectedSongs.insert(song.id)
+                                    }
                                 }
                             }
                         }

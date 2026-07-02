@@ -175,7 +175,7 @@ struct PlaylistListView: View {
                 VStack(spacing: 8) {
                     Image(systemName: "music.note.list")
                         .font(.system(size: 48))
-                        .foregroundStyle(.accent)
+                        .foregroundStyle(.tint)
 
                     Text("New Playlist")
                         .font(.title2.weight(.semibold))
